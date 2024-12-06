@@ -65,6 +65,10 @@ const generateSource = (source, color) => {
     element.addEventListener("dragstart", (ev) => {
         console.log(ev);
         const grabbingElement = getRelLocation(ev.explicitOriginalTarget);
+        const dragging = document.querySelector("#dragging");
+        if(dragging) {
+            dragging.id = undefined;
+        }
         ev.target.id = "dragging";
         ev.dataTransfer.setData("text", JSON.stringify({source, grabbingElement, color}));
     })
