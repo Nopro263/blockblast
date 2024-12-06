@@ -61,6 +61,26 @@ const generateSource = (source, color) => {
     return element;
 }
 
+const insertElement = (source, targetElement, pos) => {
+    console.log(source, targetElement, pos)
+    for (let i = 0; i < 5; i++) {
+        const row = source[i];
+        for (let index = 0; index < 5; index++) {
+            const v = (row & (0b10000 >> index)) >> (4-index);
+            if(i+pos[0] < 0 || i+pos[0] >= 10 || index+pos[1] < 0 || index+pos[1] >= 10) {
+                // invalid position
+                if(v) {
+                    return false;
+                }
+            } else {
+                
+            }
+        }
+    }
+
+    return true;
+}
+
 const sources = document.querySelector("#sources");
 const gameboard = document.querySelector(".gameboard");
 
@@ -71,7 +91,13 @@ gameboard.addEventListener("dragover", (ev) => {
 });
 
 gameboard.addEventListener("drop", (ev) => {
-    console.log(JSON.parse(ev.dataTransfer.getData("text")));
+    const {source, grabbingElement} = JSON.parse(ev.dataTransfer.getData("text"));
+
+    const gbPos = getRelLocation(ev.explicitOriginalTarget);
+    const pos = [gbPos[0]-grabbingElement[0], gbPos[1]-grabbingElement[1]]
+
+    console.log(insertElement(source, gameboard, pos));
+
     const dragging = document.querySelector("#dragging");
     dragging.parentElement.removeChild(dragging);
 })
