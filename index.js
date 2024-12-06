@@ -29,6 +29,10 @@ const getRelLocation = (element) => {
     return loc;
 }
 
+const getSquare = (element, i, index) => {
+    return element.children[i].children[index];
+}
+
 const generateSource = (source, color) => {
     const element = document.createElement("div");
     element.classList.add("source");
@@ -55,14 +59,13 @@ const generateSource = (source, color) => {
         console.log(ev);
         const grabbingElement = getRelLocation(ev.explicitOriginalTarget);
         ev.target.id = "dragging";
-        ev.dataTransfer.setData("text", JSON.stringify({source, grabbingElement}));
+        ev.dataTransfer.setData("text", JSON.stringify({source, grabbingElement, color}));
     })
 
     return element;
 }
 
-const insertElement = (source, targetElement, pos) => {
-    console.log(source, targetElement, pos)
+const insertElement = (source, color, targetElement, pos) => {
     for (let i = 0; i < 5; i++) {
         const row = source[i];
         for (let index = 0; index < 5; index++) {
@@ -73,7 +76,14 @@ const insertElement = (source, targetElement, pos) => {
                     return false;
                 }
             } else {
-                
+                const targetSquare = getSquare(targetElement, i+pos[0], index+pos[1]);
+                if(targetSquare.style.getPropertyValue("--color")) {
+                    return false; // occupied
+                } else {
+                    if(v) {
+                        targetSquare.style.setProperty("--color", color)
+                    }
+                }
             }
         }
     }
@@ -91,12 +101,12 @@ gameboard.addEventListener("dragover", (ev) => {
 });
 
 gameboard.addEventListener("drop", (ev) => {
-    const {source, grabbingElement} = JSON.parse(ev.dataTransfer.getData("text"));
+    const {source, grabbingElement, color} = JSON.parse(ev.dataTransfer.getData("text"));
 
     const gbPos = getRelLocation(ev.explicitOriginalTarget);
     const pos = [gbPos[0]-grabbingElement[0], gbPos[1]-grabbingElement[1]]
 
-    console.log(insertElement(source, gameboard, pos));
+    console.log(insertElement(source, color, gameboard, pos));
 
     const dragging = document.querySelector("#dragging");
     dragging.parentElement.removeChild(dragging);
