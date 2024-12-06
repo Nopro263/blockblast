@@ -1,0 +1,32 @@
+:root {
+    --block-size: 24px;
+    --wx: 10;
+    --wy: 10;
+
+    --block-padding: 2px;
+    --half-block-padding: calc(var(--block-padding) / 2);
+}
+
+.gameboard {
+    width: calc(var(--block-size) * var(--wx) + var(--block-padding) * (var(--wx) - 1));
+    height: calc(var(--block-size) * var(--wy) + var(--block-padding) * (var(--wy) - 1));
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: black;
+    --default-color: darkblue;
+}
+
+.element {
+    background-color: var(--color, var(--default-color, transparent));
+
+    width: var(--block-size);
+    height: var(--block-size);
+    margin: var(--half-block-padding);
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
