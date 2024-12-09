@@ -135,15 +135,22 @@ const generateSource = (source, color) => {
     });
 
     element.addEventListener("dragstart", (ev) => {
+        if(!ev.explicitOriginalTarget.classList.contains("element")) {
+            ev.preventDefault();
+            return;
+        }
         console.log(ev);
         const [_, grabbingElement] = getRelLocation(ev.explicitOriginalTarget);
         const dragging = document.querySelector("#dragging");
         if (dragging) {
-            dragging.id = undefined;
+            dragging.id = "";
         }
         ev.target.id = "dragging";
         ev.dataTransfer.setData("text", JSON.stringify({ source, grabbingElement, color }));
+        cleanElements();
     })
+
+    element.addEventListener("dragend", (ev) => {cleanElements();})
 
     return element;
 }
@@ -211,6 +218,8 @@ gameboard.addEventListener("dragover", (ev) => {
 
 gameboard.addEventListener("drop", (ev) => {
     const { source, grabbingElement, color } = JSON.parse(ev.dataTransfer.getData("text"));
+
+    cleanElements();
 
     const [ex, gbPos] = getRelLocation(ev.explicitOriginalTarget);
     if(ex) {
