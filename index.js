@@ -8,12 +8,84 @@ const ELEMENTS = [
     ],
     [
         0b00000,
+        0b01110,
+        0b01110,
+        0b01110,
+        0b00000
+    ],
+    [
+        0b00100,
+        0b00100,
+        0b00100,
+        0b00100,
+        0b00100
+    ],
+    [
         0b00000,
         0b00000,
+        0b11111,
         0b00000,
         0b00000
-    ]
+    ],
+    [
+        0b00000,
+        0b00100,
+        0b00100,
+        0b01100,
+        0b00000
+    ],
 ]
+
+const COLORS = [
+    "orange",
+    "violet",
+    "lightgreen",
+    "teal",
+    "cyan",
+    "lightcoral",
+    "coral"
+]
+
+const getLines = () => {
+    const ret = {
+        "vertical": [],
+        "horizontal": []
+    }
+
+    for (let a = 0; a < gameboard.children.length; a++) {
+        const element = gameboard.children[a];
+        let v = true;
+        for (let b = 0; b < element.children.length; b++) {
+            const e = element.children[b];
+            if(!e.style.getPropertyValue("--color")) {
+                v = false;
+                break;
+            }
+        }
+
+        if(v) {
+            ret["horizontal"].push(a);
+        }
+        
+    }
+
+    for (let b = 0; b < 10; b++) {
+        let v = true;
+        for (let a = 0; a < gameboard.children.length; a++) {
+            const element = gameboard.children[a].children[b];
+            if(!element.style.getPropertyValue("--color")) {
+                v = false;
+                break;
+            }
+        }
+
+        if(v) {
+            ret["vertical"].push(b);
+        }
+    }
+
+    return ret;
+}
 
 const getRelLocation = (element) => {
     const loc = [NaN, NaN];
@@ -121,9 +193,6 @@ const cleanElements = () => {
 const sources = document.querySelector("#sources");
 const gameboard = document.querySelector(".gameboard");
 
-sources.appendChild(generateSource(ELEMENTS[0], "red"));
-sources.appendChild(generateSource(ELEMENTS[1], "green"));
-
 gameboard.addEventListener("dragover", (ev) => {
     ev.preventDefault();
 
@@ -153,7 +222,34 @@ gameboard.addEventListener("drop", (ev) => {
     if (insertElement(source, color, gameboard, pos)) {
         const dragging = document.querySelector("#dragging");
         dragging.parentElement.removeChild(dragging);
+
+        afterDrop();
     }
 
 
 })
+
+ELEMENTS.forEach((element) => {
+    sources.appendChild(generateSource(element, "red"));
+})
+
+const afterDrop = () => {
+    const { vertical, horizontal } = getLines();
+
+    horizontal.forEach((v) => {
+        const e = gameboard.children[v];
+        for (let index = 0; index < e.children.length; index++) {
+            const element = e.children[index];
+            element.style.removeProperty("--color");
+        }
+    })
+
+    vertical.forEach((v) => {
+        for (let index = 0; index < 10; index++) {
+            const element = gameboard.children[index].children[v];
+            element.style.removeProperty("--color");
+        }
+    })
+
+    cleanElements();
+}
