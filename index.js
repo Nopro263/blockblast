@@ -238,9 +238,15 @@ gameboard.addEventListener("drop", (ev) => {
 
 })
 
-ELEMENTS.forEach((element) => {
-    sources.appendChild(generateSource(element, "red"));
-})
+const pick3 = () => {
+    const shuffled = ELEMENTS.sort(() => 0.5 - Math.random());
+    for (let index = 0; index < 3; index++) {
+        const element = shuffled[index];
+        sources.appendChild(generateSource(element, "red"));
+    }
+}
+
+pick3();
 
 const afterDrop = () => {
     const { vertical, horizontal } = getLines();
@@ -261,4 +267,8 @@ const afterDrop = () => {
     })
 
     cleanElements();
+
+    if(!sources.children.length) {
+        pick3();
+    }
 }
