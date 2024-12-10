@@ -242,8 +242,52 @@ const pick3 = () => {
     const shuffled = ELEMENTS.sort(() => 0.5 - Math.random());
     for (let index = 0; index < 3; index++) {
         const element = shuffled[index];
-        sources.appendChild(generateSource(element, "red"));
+        const e = generateSource(element, "red");
+        e.setAttribute("data-id", ELEMENTS.indexOf(element));
+        sources.appendChild(e);
     }
+}
+
+const check = (source) => {
+    const canInsertElement = (source, targetElement, pos) => {
+        const actions = []
+    
+        for (let i = 0; i < 5; i++) {
+            const row = source[i];
+            for (let index = 0; index < 5; index++) {
+                const v = (row & (0b10000 >> index)) >> (4 - index);
+                if (i + pos[0] < 0 || i + pos[0] >= 10 || index + pos[1] < 0 || index + pos[1] >= 10) {
+                    // invalid position
+                    if (v) {
+                        return false;
+                    }
+                } else {
+                    if (v) {
+                        const targetSquare = getSquare(targetElement, i + pos[0], index + pos[1]);
+                        if (targetSquare.style.getPropertyValue("--color")) {
+                            return false; // occupied
+                        } else {
+                            actions.push(targetSquare);
+                        }
+                    }
+                }
+            }
+        }
+
+        console.log("fd")
+    
+        return true;
+    }
+
+    for (let a = 0; a < 10; a++) {
+        for (let b = 0; b < 10; b++) {
+            if(canInsertElement(source, gameboard, [a,b])) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 pick3();
@@ -270,5 +314,19 @@ const afterDrop = () => {
 
     if(!sources.children.length) {
         pick3();
+    }
+
+    let possible = false;
+
+    for (let index = 0; index < sources.children.length; index++) {
+        const element = sources.children[index];
+        if(check(ELEMENTS[parseInt(element.getAttribute("data-id"))])) {
+            possible = true;
+        }
+    }
+
+    if(!possible) {
+        alert("Lost");
+        window.location.reload();
     }
 }
