@@ -21,9 +21,36 @@
 .element {
     background-color: var(--color, var(--default-color, transparent));
 
-    width: var(--block-size);
-    height: var(--block-size);
+
+    width: calc(var(--block-size));
+    height: calc(var(--block-size));
     margin: var(--half-block-padding);
+
+    position: relative;
+}
+
+.element[style]:not([style=""]) {
+    
+    width: calc(var(--block-size) - var(--half-block-padding));
+    height: calc(var(--block-size) - var(--half-block-padding));
+    margin-right: var(--block-padding);
+    margin-bottom: var(--block-padding);
+}
+
+.gameboard .element[style]:not([style=""])::before {
+    z-index: -1;
+}
+
+.element[style]:not([style=""])::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    top: 0;
+    width: calc(var(--block-size) + var(--half-block-padding));
+    height: calc(var(--block-size) + var(--half-block-padding));
+
+    background-color: orange;
 }
 
 .row {
