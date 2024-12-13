@@ -1,9 +1,9 @@
 :root {
-    --block-size: 24px;
+    --block-size: 48px;
     --wx: 10;
     --wy: 10;
 
-    --block-padding: 2px;
+    --block-padding: 5px;
     --half-block-padding: calc(var(--block-padding) / 2);
 }
 
@@ -14,8 +14,9 @@
     display: flex;
     flex-direction: column;
 
-    background-color: black;
+    background-color: transparent;
     --default-color: darkblue;
+    position: relative;
 }
 
 .element {
@@ -30,27 +31,27 @@
 }
 
 .element[style]:not([style=""]) {
-    
-    width: calc(var(--block-size) - var(--half-block-padding));
-    height: calc(var(--block-size) - var(--half-block-padding));
-    margin-right: var(--block-padding);
-    margin-bottom: var(--block-padding);
+    width: calc(var(--block-size) - var(--block-padding));
+    height: calc(var(--block-size) - var(--block-padding));
+    margin-right: calc(var(--block-padding) + var(--half-block-padding));
+    margin-bottom: calc(var(--block-padding) + var(--half-block-padding));
 }
 
-.gameboard .element[style]:not([style=""])::before {
+.gameboard .element[style]:not([style=""])::after {
     z-index: -1;
 }
 
-.element[style]:not([style=""])::before {
+.element[style]:not([style=""])::after {
     content: "";
     position: absolute;
     z-index: -1;
     left: 0;
     top: 0;
-    width: calc(var(--block-size) + var(--half-block-padding));
-    height: calc(var(--block-size) + var(--half-block-padding));
+    width: calc(var(--block-size) + var(--half-block-padding) / 2);
+    height: calc(var(--block-size) + var(--half-block-padding) / 2);
 
-    background-color: orange;
+    background-color: hsl(0, 100%, 82%);
+    /*rgb(255, 161, 161)*/
 }
 
 .row {
