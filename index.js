@@ -4,46 +4,41 @@ const ELEMENTS = [
         0b00000,
         0b00100,
         0b00000,
-        0b00000
+        0b00000,
+        "red"
     ],
     [
         0b00000,
         0b01110,
         0b01110,
         0b01110,
-        0b00000
+        0b00000,
+        "violet"
     ],
     [
         0b00100,
         0b00100,
         0b00100,
         0b00100,
-        0b00100
+        0b00100,
+        "cyan"
     ],
     [
         0b00000,
         0b00000,
         0b11111,
         0b00000,
-        0b00000
+        0b00000,
+        "lightgreen"
     ],
     [
         0b00000,
         0b00100,
         0b00100,
         0b01100,
-        0b00000
+        0b00000,
+        "coral"
     ],
-]
-
-const COLORS = [
-    "orange",
-    "violet",
-    "lightgreen",
-    "teal",
-    "cyan",
-    "lightcoral",
-    "coral"
 ]
 
 const getLines = () => {
@@ -251,7 +246,7 @@ const pick3 = () => {
     const shuffled = ELEMENTS.sort(() => 0.5 - Math.random());
     for (let index = 0; index < 3; index++) {
         const element = shuffled[index];
-        const e = generateSource(element, "red");
+        const e = generateSource(element, element[5]);
         e.setAttribute("data-id", ELEMENTS.indexOf(element));
         sources.appendChild(e);
     }
@@ -343,7 +338,12 @@ const afterDrop = () => {
     }
 
     if(!possible) {
-        alert("Lost");
+        if(!localStorage.getItem("score") || count > parseInt(localStorage.getItem("score"))) {
+            alert("New highscore! " + count);
+            localStorage.setItem("score", count);
+        } else {
+            alert("You Lost, you scored: " + count);
+        }
         window.location.reload();
     }
 }

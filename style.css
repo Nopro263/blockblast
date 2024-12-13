@@ -1,5 +1,5 @@
 :root {
-    --block-size: 48px;
+    --block-size: 40px;
     --wx: 10;
     --wy: 10;
 
@@ -30,7 +30,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: green;
+    background-color: grey;
 }
 
 .element {
@@ -64,7 +64,7 @@
     width: calc(var(--block-size) + var(--half-block-padding) / 2);
     height: calc(var(--block-size) + var(--half-block-padding) / 2);
 
-    background-color: hsl(0, 100%, 82%);
+    background-color: hsl(0, 0%, 95%);
     /*rgb(255, 161, 161)*/
 }
 
