@@ -150,7 +150,13 @@ const generateSource = (source, color) => {
         cleanElements();
     })
 
-    element.addEventListener("dragend", (ev) => {cleanElements();})
+    element.addEventListener("dragend", (ev) => {
+        cleanElements();
+        const dragging = document.querySelector("#dragging");
+        if (dragging) {
+            dragging.id = "";
+        }
+    })
 
     return element;
 }

@@ -8,7 +8,7 @@
 }
 
 .gameboard {
-    width: calc(var(--block-size) * var(--wx) + var(--block-padding) * (var(--wx) - 1));
+    width: fit-content;
     height: calc(var(--block-size) * var(--wy) + var(--block-padding) * (var(--wy) - 1));
 
     display: flex;
@@ -17,6 +17,20 @@
     background-color: transparent;
     --default-color: darkblue;
     position: relative;
+
+    padding: 10px;
+    padding-bottom: calc(10px + var(--half-block-padding));
+}
+
+.gameboard::before {
+    content: "";
+    position: absolute;
+    z-index: -100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: green;
 }
 
 .element {
@@ -57,4 +71,39 @@
 .row {
     display: flex;
     flex-direction: row;
+}
+
+header {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    display: flex;
+    justify-content: center;
+}
+
+main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+main > #sources {
+    display: flex;
+    margin-top: 2rem;
+}
+
+main > #sources > * {
+    /*background-color: green;*/
+    margin: 1rem;
+
+    position: relative;
+}
+
+main > #sources > *:not(#dragging)::before {
+    content: "";
+    position: absolute;
+    z-index: -100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: lightgray;
 }
