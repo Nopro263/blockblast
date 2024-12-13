@@ -112,7 +112,9 @@ const generateSource = (source, color) => {
     element.classList.add("source");
     element.draggable = true;
 
-    source.forEach(row => {
+
+    for (let a = 0; a < 5; a++) {
+        const row = source[a];
         const rowElement = document.createElement("div");
         rowElement.classList.add("row");
         element.appendChild(rowElement);
@@ -127,7 +129,7 @@ const generateSource = (source, color) => {
             //elementElement.innerHTML = v;
             rowElement.appendChild(elementElement);
         }
-    });
+    };
 
     element.addEventListener("dragstart", (ev) => {
         if(!ev.explicitOriginalTarget.classList.contains("element")) {
