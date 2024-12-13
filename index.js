@@ -205,6 +205,9 @@ const cleanElements = () => {
 
 const sources = document.querySelector("#sources");
 const gameboard = document.querySelector(".gameboard");
+const countElement = document.querySelector("#count");
+let count = 0;
+let multiplier = 1;
 
 gameboard.addEventListener("dragover", (ev) => {
     ev.preventDefault();
@@ -301,12 +304,16 @@ pick3();
 const afterDrop = () => {
     const { vertical, horizontal } = getLines();
 
+    multiplier = vertical.length + horizontal.length;
+
     horizontal.forEach((v) => {
         const e = gameboard.children[v];
         for (let index = 0; index < e.children.length; index++) {
             const element = e.children[index];
             element.style.removeProperty("--color");
         }
+
+        count += multiplier * 10;
     })
 
     vertical.forEach((v) => {
@@ -314,7 +321,11 @@ const afterDrop = () => {
             const element = gameboard.children[index].children[v];
             element.style.removeProperty("--color");
         }
+
+        count += multiplier * 9;
     })
+
+    countElement.innerHTML = count;
 
     cleanElements();
 
