@@ -274,13 +274,13 @@ const check = (source) => {
             }
         }
 
-        console.log("fd")
     
         return true;
     }
 
-    for (let a = 0; a < 10; a++) {
-        for (let b = 0; b < 10; b++) {
+    for (let a = -6; a < 16; a++) {
+        for (let b = -6; b < 16; b++) {
+            //console.log("d", [a,b])
             if(canInsertElement(source, gameboard, [a,b])) {
                 return true;
             }
