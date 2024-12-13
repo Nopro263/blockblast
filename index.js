@@ -195,7 +195,7 @@ const cleanElements = () => {
         const element = gameboard.children[a];
         for (let b = 0; b < element.children.length; b++) {
             const e = element.children[b];
-            e.style.removeProperty("--default-color");
+            e.style.removeProperty("--temp-color");
         }
     }
 }
@@ -219,7 +219,7 @@ gameboard.addEventListener("dragover", (ev) => {
     }
     const pos = [gbPos[0] - grabbingElement[0], gbPos[1] - grabbingElement[1]]
 
-    insertElement(source, "yellow", gameboard, pos, "--default-color");
+    insertElement(source, source[5], gameboard, pos, "--temp-color");
 });
 
 gameboard.addEventListener("drop", (ev) => {

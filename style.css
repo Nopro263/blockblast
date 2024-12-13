@@ -44,7 +44,10 @@ body {
 }
 
 .element {
-    background-color: var(--color, var(--default-color, transparent));
+    --tc: hsl(from var(--temp-color) h s l);
+    --cc: hsl(from var(--color) h s calc(l - 10));
+    --c: var(--cc, var(--tc, var(--default-color, transparent)));
+    background-color: var(--c);
 
 
     width: calc(var(--block-size));
@@ -54,33 +57,24 @@ body {
     position: relative;
 }
 
-.element[style]:not([style=""]) {
-    width: calc(var(--block-size) - var(--block-padding));
-    height: calc(var(--block-size) - var(--block-padding));
-    margin-right: calc(var(--block-padding) + var(--half-block-padding));
-    margin-bottom: calc(var(--block-padding) + var(--half-block-padding));
-}
-
 .gameboard .element:not([style]),
 .gameboard .element[style=""] {
     border-radius: 5px;
 }
 
-.gameboard .element[style]:not([style=""])::after {
-    z-index: -1;
-}
+.element[style]:not([style=""]) {
+    --border-size: 7px;
 
-.element[style]:not([style=""])::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    left: 0;
-    top: 0;
-    width: calc(var(--block-size) + var(--half-block-padding) / 2);
-    height: calc(var(--block-size) + var(--half-block-padding) / 2);
+    --light-color: hsl(from var(--c) h s calc(l + 25));
+    --dark-color: hsl(from var(--c) h s calc(l - 10));
 
-    background-color: hsl(0, 0%, 95%);
-    /*rgb(255, 161, 161)*/
+    border-left: var(--border-size) solid color-mix(in oklab, var(--dark-color) 25%, var(--light-color));
+    border-top: var(--border-size) solid color-mix(in oklab, var(--dark-color) 0%, var(--light-color));
+    border-right: var(--border-size) solid color-mix(in oklab, var(--dark-color) 50%, var(--light-color));
+    border-bottom: var(--border-size) solid color-mix(in oklab, var(--dark-color) 100%, var(--light-color));
+
+    width: calc(var(--block-size) - (2 * var(--border-size)));
+    height: calc(var(--block-size) - (2 * var(--border-size)));
 }
 
 .row {
